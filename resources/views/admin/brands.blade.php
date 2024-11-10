@@ -37,6 +37,11 @@
             </div>
             <div class="wg-table table-all-user">
                 <div class="table-responsive">
+                    @if (session('status'))
+                        <div class="alert alert-success">
+                            {{session('status')}}
+                        </div>
+                    @endif
                     <table class="table table-striped table-bordered">
                         <thead>
                             <tr>
@@ -90,3 +95,29 @@
     </div>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    $(function(){
+        $("#myFile").on('change',function(e){
+            const photoInp = $("myFile");
+            const [file] = this.files;
+            if(file)
+        {
+            $("#imgpreview img").attr('src',URL.createObjectURL(file));
+            $("#imgpreview").show();
+        }
+    });
+        $("input[name ='name']").on('keyup',function(){
+            $("input[name ='slug']").val(StringToSlug($(this).val()));
+        });
+
+    });
+
+
+    function StringToSlug(Text){
+        return Text.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
+    }
+</script>
+
+@endpush
