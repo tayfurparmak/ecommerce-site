@@ -2,13 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\EditBrandStoreRequest;
 use App\Models\Brand;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
 use App\Http\Requests\AddBrandStoreRequest;
-
+use App\Models\Category;
 
 
 class AdminController extends Controller
@@ -39,7 +40,7 @@ class AdminController extends Controller
 
 
         $brand = new Brand();
-        $brand->name =$validatedRequest['name'];
+        $brand->name = $validatedRequest['name'];
         $brand->slug = Str::slug($validatedRequest['name']);
 
         // if ($validatedRequest->hasFile('image')) {
@@ -63,4 +64,99 @@ class AdminController extends Controller
     //         $constraint->aspectRatio();
     //     })->save($destinationPath.'/'.$imageName);
     // }
+
+
+public function edit_brand($id)
+{
+    $brand = Brand::find($id);
+    return view('admin.brand-edit',compact('brand'));
+}
+
+public function update_brand(request $request)
+{
+    $request->validate([
+        'name' => 'required',
+        'slug' => 'required|unique:brands,slug,'.$request->id,
+    ]);
+
+
+    $brand = Brand::find($request->id);
+    $brand->name =  $request['name'];
+    $brand->slug = Str::slug($request['name']);
+
+    $brand->save();
+    return redirect()->route('admin.brands')->with('status','Record has been updated successfully !');
+}
+
+public function delete_brand($id)
+{
+    $brand = Brand::find($id);
+
+    $brand->delete();
+    return redirect()->route('admin.brands')->with('status','Record has been deleted successfully !');
+}
+
+
+public function categories()
+ {
+        $categories = Category::orderBy('id','DESC')->paginate(10);
+        return view("admin.categories",compact('categories'));
+ }
+
+ public function add_category()
+{
+    return view("admin.category-add");
+}
+
+
+public function add_category_store(Request $request)
+{
+    $request->validate([
+        'name' => 'required',
+        'slug' => 'required|unique:categories,slug',
+    ]);
+
+    $category = new Category();
+    $category->name = $request->name;
+    $category->slug = Str::slug($request->name);
+    $category->save();
+    return redirect()->route('admin.categories')->with('status','Record has been added successfully !');
+}
+
+public function edit_category($id)
+{
+    $category = Category::find($id);
+    return view('admin.category-edit',compact('category'));
+}
+
+
+public function update_category(Request $request)
+{
+    $request->validate([
+        'name' => 'required',
+        'slug' => 'required|unique:categories,slug,'.$request->id,
+
+    ]);
+
+    $category = Category::find($request->id);
+    $category->name = $request->name;
+    $category->slug = $request->slug;
+    $category->save();
+    return redirect()->route('admin.categories')->with('status','Record has been updated successfully !');
+}
+
+public function delete_category($id)
+{
+    $category = Category::find($id);
+
+    $category->delete();
+    return redirect()->route('admin.categories')->with('status','Record has been deleted successfully !');
+}
+
+public function add_product()
+{
+    $categories = Category::Select('id','name')->orderBy('name')->get();
+    $brands = Brand::Select('id','name')->orderBy('name')->get();
+    return view("admin.product-add",compact('categories','brands'));
+}
 }

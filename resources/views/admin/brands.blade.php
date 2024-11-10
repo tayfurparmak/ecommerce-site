@@ -24,16 +24,16 @@
                 <div class="wg-filter flex-grow">
                     <form class="form-search">
                         <fieldset class="name">
-                            <input type="text" placeholder="Search here..." class="" name="name"
-                                tabindex="2" value="" aria-required="true" required="">
+                            <input type="text" placeholder="Search here..." class="" name="name" tabindex="2" value=""
+                                aria-required="true" required="">
                         </fieldset>
                         <div class="button-submit">
                             <button class="" type="submit"><i class="icon-search"></i></button>
                         </div>
                     </form>
                 </div>
-                <a class="tf-button style-1 w208" href="{{route('admin.brand.add')}}"><i
-                        class="icon-plus"></i>Add new</a>
+                <a class="tf-button style-1 w208" href="{{route('admin.brand.add')}}"><i class="icon-plus"></i>Add
+                    new</a>
             </div>
             <div class="wg-table table-all-user">
                 <div class="table-responsive">
@@ -54,33 +54,35 @@
                         </thead>
                         <tbody>
                             @foreach ($brands as $brand)
-                            <tr>
-                                <td>{{$brand->id}}</td>
-                                <td class="pname">
-                                    <div class="image">
-                                        <img src="#" alt="" class="image">
-                                    </div>
-                                    <div class="name">
-                                        <a href="#" class="body-title-2">{{$brand->name}}</a>
-                                    </div>
-                                </td>
-                                <td>{{$brand->slug}}</td>
-                                <td><a href="#" target="_blank">1</a></td>
-                                <td>
-                                    <div class="list-icon-function">
-                                        <a href="#">
-                                            <div class="item edit">
-                                                <i class="icon-edit-3"></i>
-                                            </div>
-                                        </a>
-                                        <form action="#" method="POST">
-                                            <div class="item text-danger delete">
-                                                <i class="icon-trash-2"></i>
-                                            </div>
-                                        </form>
-                                    </div>
-                                </td>
-                            </tr>
+                                <tr>
+                                    <td>{{$brand->id}}</td>
+                                    <td class="pname">
+                                        <div class="image">
+                                            <img src="#" alt="" class="image">
+                                        </div>
+                                        <div class="name">
+                                            <a href="#" class="body-title-2">{{$brand->name}}</a>
+                                        </div>
+                                    </td>
+                                    <td>{{$brand->slug}}</td>
+                                    <td><a href="" target="_blank">1</a></td>
+                                    <td>
+                                        <div class="list-icon-function">
+                                            <a href="{{route('admin.brand.edit', ['id' => $brand->id])}}">
+                                                <div class="item edit">
+                                                    <i class="icon-edit-3"></i>
+                                                </div>
+                                            </a>
+                                            <form action="{{route('admin.brand.delete', ['id' => $brand->id])}}" method="POST">
+                                                @csrf
+                                                @method('DELETE')
+                                                <div class="item text-danger delete">
+                                                    <i class="icon-trash-2"></i>
+                                                </div>
+                                            </form>
+                                        </div>
+                                    </td>
+                                </tr>
                             @endforeach
                         </tbody>
                     </table>
@@ -95,3 +97,24 @@
     </div>
 </div>
 @endsection
+@push('scripts')
+    <script>
+        $(function(){
+            $(".delete").on('click',function(e){
+                e.preventDefault();
+                var selectedForm = $(this).closest('form');
+                swal({
+                    title: "Are you sure?",
+                    text: "You want to delete this record?",
+                    type: "warning",
+                    buttons: ["No!", "Yes!"],
+                    confirmButtonColor: '#dc3545'
+                }).then(function (result) {
+                    if (result) {
+                        selectedForm.submit();
+                    }
+                });
+            });
+        });
+    </script>
+@endpush

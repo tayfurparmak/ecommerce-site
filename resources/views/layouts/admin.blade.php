@@ -24,7 +24,7 @@
     <link rel="apple-touch-icon-precomposed" href="{{ asset('images/favicon.ico') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/sweetalert.min.css') }}">
     <link rel="stylesheet" type="text/css" href="{{ asset('css/custom.css') }} ">
-    
+
     @stack("styles")
 </head>
 
@@ -111,7 +111,7 @@
                                             </a>
                                         </li>
                                         <li class="sub-menu-item">
-                                            <a href="categories.html" class="">
+                                            <a href="{{route('admin.categories')}}" class="">
                                                 <div class="text">Categories</div>
                                             </a>
                                         </li>
@@ -458,7 +458,7 @@
                     <div class="main-content">
                         @yield('content')
 
-                   
+
 
                         <div class="bottom-page">
                             <div class="body-text">Copyright © 2024 SurfsideMedia</div>
@@ -472,8 +472,8 @@
 
     <script src="{{ asset('js/jquery.min.js') }}"></script>
     <script src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>   
-    <script src="{{ asset('js/sweetalert.min.js') }}"></script>    
+    <script src="{{ asset('js/bootstrap-select.min.js') }}"></script>
+    <script src="{{ asset('js/sweetalert.min.js') }}"></script>
     <script src="{{ asset('js/apexcharts/apexcharts.js') }}"></script>
     <script src="{{ asset('js/main.js') }}"></script>
     <script>
