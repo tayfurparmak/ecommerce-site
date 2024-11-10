@@ -1,4 +1,4 @@
-@extends('admin.layouts')
+@extends('layouts.admin')
 @section('content')
 <div class="main-content-inner">
     <div class="main-content-wrap">
@@ -95,29 +95,3 @@
     </div>
 </div>
 @endsection
-
-@push('scripts')
-<script>
-    $(function(){
-        $("#myFile").on('change',function(e){
-            const photoInp = $("myFile");
-            const [file] = this.files;
-            if(file)
-        {
-            $("#imgpreview img").attr('src',URL.createObjectURL(file));
-            $("#imgpreview").show();
-        }
-    });
-        $("input[name ='name']").on('keyup',function(){
-            $("input[name ='slug']").val(StringToSlug($(this).val()));
-        });
-
-    });
-
-
-    function StringToSlug(Text){
-        return Text.toLowerCase().replace(/ /g,'-').replace(/[^\w-]+/g,'');
-    }
-</script>
-
-@endpush
