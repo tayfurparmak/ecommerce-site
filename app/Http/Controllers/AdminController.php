@@ -10,7 +10,7 @@ use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
 use App\Http\Requests\AddBrandStoreRequest;
 use App\Models\Category;
-
+use App\Models\Product;
 
 class AdminController extends Controller
 {
@@ -153,10 +153,10 @@ public function delete_category($id)
     return redirect()->route('admin.categories')->with('status','Record has been deleted successfully !');
 }
 
-public function add_product()
+public function products()
 {
-    $categories = Category::Select('id','name')->orderBy('name')->get();
-    $brands = Brand::Select('id','name')->orderBy('name')->get();
-    return view("admin.product-add",compact('categories','brands'));
+    $products = Product::orderBy('created_at', 'DESC')->paginate(10);
+    return view('admin.products',compact('products'));
 }
+
 }
