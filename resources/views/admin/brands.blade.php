@@ -1,4 +1,4 @@
-@extends('layouts.admin')
+@extends('admin.layouts')
 @section('content')
 <div class="main-content-inner">
     <div class="main-content-wrap">
@@ -32,7 +32,7 @@
                         </div>
                     </form>
                 </div>
-                <a class="tf-button style-1 w208" href="add-brand.html"><i
+                <a class="tf-button style-1 w208" href="{{route('admin.brand.add')}}"><i
                         class="icon-plus"></i>Add new</a>
             </div>
             <div class="wg-table table-all-user">
