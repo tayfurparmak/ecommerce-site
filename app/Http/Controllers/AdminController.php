@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Str;
 use Intervention\Image\Laravel\Facades\Image;
+use App\Http\Requests\AddBrandStoreRequest;
+
+
 
 class AdminController extends Controller
 {
@@ -24,36 +27,40 @@ class AdminController extends Controller
     {
         return view('admin.brand-add');
     }
-    public function add_brand_store(Request $request)
-    {        
-        $request->validate([
-            'name' => 'required',
-            'slug' => 'required|unique:brands,slug',
-            'image' => 'mimes:png,jpg,jpeg|max:2048'
-        ]);
+    public function add_brand_store(AddBrandStoreRequest $request)
+    {
+
+
+        $validatedRequest = $request->validated();
+
+        // dump($validatedRequest);
+        // dd("bu8rda");
+
+
 
         $brand = new Brand();
-        $brand->name = $request->name;
-        $brand->slug = Str::slug($request->name);
-        
-        if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $file_extension = $image->extension();
-            $file_name = Carbon::now()->timestamp . '.' . $file_extension;        
-            $this->GenerateBrandThumbailImage($image, $file_name);
-            $brand->image = $file_name;
-        }
-        
+        $brand->name =$validatedRequest['name'];
+        $brand->slug = Str::slug($validatedRequest['name']);
+
+        // if ($validatedRequest->hasFile('image')) {
+        //     $image = $validatedRequest->file('image');
+        //     $file_extension = $image->extension();
+        //     $file_name = Carbon::now()->timestamp . '.' . $file_extension;
+        //     // $this->GenerateBrandThumbailsImage($image, $file_name);
+        //     $brand->image = $file_name;
+        // }
+
         $brand->save();
         return redirect()->route('admin.brands')->with('status', 'Record has been added successfully!');
     }
 
-    public function GenerateBrandThumbailImage($image, $imageName)
-    {
-        $destinationPath = public_path('uploads/brands');
-        $img = Image::read($image->path());
-        $img->cover(124, 124, "top");
-        $img->resize(124, 124)
-            ->save($destinationPath.'/'.$imageName);
-    }
+    // public function GenerateBrandThumbailsImage($image, $imageName)
+    // {
+    //     $destinationPath = public_path('uploads/brands');
+    //     $img = Image::read($image->path());
+    //     $img->cover(124, 124, "top");
+    //     $img->resize(124, 124, function($constraint){
+    //         $constraint->aspectRatio();
+    //     })->save($destinationPath.'/'.$imageName);
+    // }
 }

@@ -29,19 +29,19 @@
                 @csrf
                 <fieldset class="name">
                     <div class="body-title">Brand Name <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Brand name" name="name" tabindex="0" value="{{old('name')}}" aria-required="true">                    
+                    <input class="flex-grow" type="text" placeholder="Brand name" name="name" tabindex="0" value="{{old('name')}}" aria-required="true">
                 </fieldset>
                 @error("name") <span class="alert alert-danger text-center">{{$message}}</span> @enderror
                 <fieldset class="name">
                     <div class="body-title">Brand Slug <span class="tf-color-1">*</span></div>
-                    <input class="flex-grow" type="text" placeholder="Brand Slug" name="slug" tabindex="0" value="{{old('slug')}}" aria-required="true">                                       
+                    <input class="flex-grow" type="text" placeholder="Brand Slug" name="slug" tabindex="0" value="{{old('slug')}}" aria-required="true">
                 </fieldset>
                 @error("slug") <span class="alert alert-danger text-center">{{$message}}</span> @enderror
                 <fieldset>
                     <div class="body-title">Upload images <span class="tf-color-1">*</span></div>
                     <div class="upload-image flex-grow">
-                        <div class="item" id="imgpreview" style="display:none">                            
-                            <img src="{{asset('images/upload/upload-1.png')}}" class="effect8" alt="">
+                        <div class="item" id="imgpreview" style="display:none">
+                            <img src="#" class="effect8" alt="">
                         </div>
                         <div id="upload-file" class="item up-load">
                             <label class="uploadfile" for="myFile">
@@ -52,10 +52,10 @@
                                 <input type="file" id="myFile" name="image" accept="image/*">
                             </label>
                         </div>
-                    </div>                    
-                </fieldset> 
+                    </div>
+                </fieldset>
                 @error("image") <span class="alert alert-danger text-center">{{$message}}</span> @enderror
-                
+
                 <div class="bot">
                     <div></div>
                     <button class="tf-button w208" type="submit">Save</button>
@@ -65,7 +65,7 @@
         <!-- /new-category -->
     </div>
     <!-- /main-content-wrap -->
-</div>                    
+</div>
 
 </div>
 @endsection
@@ -74,24 +74,24 @@
     <script>
             $(function(){
                 $("#myFile").on("change",function(e){
-                    const photoInp = $("#myFile");                    
+                    const photoInp = $("#myFile");
                     const [file] = this.files;
                     if (file) {
                         $("#imgpreview img").attr('src',URL.createObjectURL(file));
-                        $("#imgpreview").show();                        
+                        $("#imgpreview").show();
                     }
-                }); 
+                });
 
                 $("input[name='name']").on("change",function(){
                     $("input[name='slug']").val(StringToSlug($(this).val()));
                 });
-                
+
             });
-           function StringToSlug(Text) {    
+           function StringToSlug(Text) {
                 return Text.toLowerCase()
                 .replace(/ /g,'-')
-                .replace(/[^\w-]+/g,'');    
-            }      
-         
+                .replace(/[^\w-]+/g,'');
+            }
+
     </script>
 @endpush
