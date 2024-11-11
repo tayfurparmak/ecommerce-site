@@ -247,4 +247,12 @@ public function update_product(Request $request)
     $product->save();       
     return redirect()->route('admin.products')->with('status','Record has been updated successfully !');
 }
+
+
+public function delete_product($id)
+{
+    $product = Product::find($id);        
+    $product->delete();
+    return redirect()->route('admin.products')->with('status','Record has been deleted successfully !');
+} 
 }
