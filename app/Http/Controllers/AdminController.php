@@ -203,4 +203,48 @@ public function product_store(Request $request)
     return redirect()->route('admin.products')->with('status','Record has been added successfully !');
 }
 
+
+public function edit_product($id)
+{
+    $product = Product::find($id);
+    $categories = Category::Select('id','name')->orderBy('name')->get();
+    $brands = Brand::Select('id','name')->orderBy('name')->get();
+    return view('admin.product-edit',compact('product','categories','brands'));
+}
+
+public function update_product(Request $request)
+{
+    $request->validate([
+        'name'=>'required',
+        'slug'=>'required|unique:products,slug,'.$request->id,
+        'category_id'=>'required',
+        'brand_id'=>'required',            
+        'short_description'=>'required',
+        'description'=>'required',
+        'regular_price'=>'required',
+        'sale_price'=>'required',
+        'SKU'=>'required',
+        'stock_status'=>'required',
+        'featured'=>'required',
+        'quantity'=>'required',
+        
+    ]);
+    
+    $product = Product::find($request->id);
+    $product->name = $request->name;
+    $product->slug = Str::slug($request->name);
+    $product->short_description = $request->short_description;
+    $product->description = $request->description;
+    $product->regular_price = $request->regular_price;
+    $product->sale_price = $request->sale_price;
+    $product->SKU = $request->SKU;
+    $product->stock_status = $request->stock_status;
+    $product->featured = $request->featured;
+    $product->quantity = $request->quantity;
+ 
+
+
+    $product->save();       
+    return redirect()->route('admin.products')->with('status','Record has been updated successfully !');
+}
 }
